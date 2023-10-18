@@ -8,10 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
 @SpringBootTest
-class GameRepostioryTest {
+class GameRepositoryTest {
 
     @Autowired
-    private GameRepostiory  repostiory;
+    private GameRepository repostiory;
 
     @Test
     void testInsert(){
