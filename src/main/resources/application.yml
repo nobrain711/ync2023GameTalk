@@ -2,9 +2,11 @@ spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
     url: jdbc:oracle:thin:@ync2023-japan-class-cteam.cxoxbdpjlvzo.ap-northeast-2.rds.amazonaws.com/PROJECT
-    username: ync
-    password: ync2023j
-
+    username: game_review
+    password: pw3
+  # #master user
+#    username: ync
+#    password: ync2023j
   jpa:
     hibernate:
       ddl-auto: none
