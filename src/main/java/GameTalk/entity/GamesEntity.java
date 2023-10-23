@@ -4,7 +4,7 @@ package GameTalk.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -15,10 +15,9 @@ import java.util.List;
 @Builder
 @ToString
 @Table(name = "games",
-        indexes = {@Index(name = "idx_games_release_date", columnList = "relesaeDate")},
-        schema = "YNC"
-)
-@SequenceGenerator(name = "game_seq", sequenceName = "game_seq", schema = "YNC")
+        indexes = {@Index(name = "idx_games_release_date", columnList = "release_date")},
+        schema = "YNC")
+@SequenceGenerator(name = "game_seq", sequenceName = "game_seq", schema = "YNC" ,allocationSize = 1)
 public class GamesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_seq")
@@ -33,7 +32,7 @@ public class GamesEntity {
     private String info;
 
     @Column(name = "release_date")
-    private Date relesaeDate;
+    private LocalDate relesaeDate;
 
     @ManyToMany
     @JoinTable(name = "game_gener", schema = "YNC",
@@ -56,4 +55,10 @@ public class GamesEntity {
     @ManyToOne
     @JoinColumn(name = "series_id")
     private SeriesEntity series;
+
+    @ManyToMany
+    @JoinTable(name = "game_store", schema = "YNC",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "store_id"))
+    private List<StoresEntity> stores;
 }

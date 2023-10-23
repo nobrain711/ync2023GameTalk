@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "series", schema = "YNC")
 @SequenceGenerator(name = "series_seq", sequenceName = "series_seq",
-        allocationSize = 1, initialValue = 1)
+        allocationSize = 1, schema = "YNC")
 public class SeriesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "series_seq")

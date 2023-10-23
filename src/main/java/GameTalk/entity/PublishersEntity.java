@@ -9,11 +9,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Builder
 @Entity
 @Table(name = "publishers", schema = "YNC")
-@SequenceGenerator(name = "publisher_seq",
-        sequenceName = "publisher_seq", allocationSize = 1)
+@SequenceGenerator(name = "publisher_seq", sequenceName = "publisher_seq",
+        allocationSize = 1, schema = "YNC")
 public class PublishersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "publisher_seq")
@@ -26,6 +27,6 @@ public class PublishersEntity {
     @Column(name = "url")
     private String url;
 
-    @ManyToMany(mappedBy = "publisher")
+    @ManyToMany(mappedBy = "publishers")
     private List<GamesEntity> games;
 }
