@@ -1,7 +1,8 @@
 package GameTalk.entity;
 
 
-import GameTalk.entity.joinentity.GameGenreEntity;
+import GameTalk.entity.joinEntity.GameGenreEntity;
+import GameTalk.entity.joinEntity.GamePublisherEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,10 +36,13 @@ public class GamesEntity {
     @Column(name = "release_date")
     private LocalDate relesaeDate;
 
-    @OneToMany(mappedBy = "games")
-    private List<GameGenreEntity> gameGener;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_id")
     private SeriesEntity series;
+
+    @OneToMany(mappedBy = "games")
+    private List<GameGenreEntity> gameGenre;
+
+    @OneToMany(mappedBy = "games")
+    private List<GamePublisherEntity> gamePublisher;
 }

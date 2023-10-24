@@ -1,4 +1,4 @@
-package GameTalk.entity.joinentity.idclass;
+package GameTalk.entity.idclass;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +10,11 @@ import java.util.Objects;
 @Setter
 public class GameGenreEntityId implements Serializable {
     private Long games;
-    private Long geners;
+    private Long genres;
 
     @Override
     public int hashCode() {
-        return Objects.hash(games, geners);
+        return Objects.hash(games, genres);
     }
 
     @Override
@@ -27,6 +27,6 @@ public class GameGenreEntityId implements Serializable {
 
         GameGenreEntityId that = (GameGenreEntityId) obj;
         return Objects.equals(games, that.games) &&
-                Objects.equals(geners, that.geners);
+                Objects.equals(genres, that.genres);
     }
 }
