@@ -1,6 +1,7 @@
 package GameTalk.entity;
 
 
+import GameTalk.entity.joinentity.GameGenreEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,11 +35,8 @@ public class GamesEntity {
     @Column(name = "release_date")
     private LocalDate relesaeDate;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "game_gener", schema = "YNC",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "gener_id"))
-    private List<GenersEntity> geners;
+    @OneToMany(mappedBy = "games")
+    private List<GameGenreEntity> gameGener;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_id")

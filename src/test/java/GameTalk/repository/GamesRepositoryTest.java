@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootTest
 class GamesRepositoryTest {
@@ -31,10 +32,28 @@ class GamesRepositoryTest {
         gamesRepository.save(build);
     }
 
-    // Game Info find
-    @Transactional
+    // findAll
     @Test
-    void findByTitleTest(){
-        System.out.println(gamesRepository.findByTitleContaining("Assassin's Creed"));
+    @Transactional
+    void findAllTest() {
+        List<GamesEntity> gamesEntities = gamesRepository.findAll();
+
+        for (GamesEntity gamesEntity : gamesEntities) {
+            System.out.println(gamesEntity);
+        }
+    }
+
+    // Game Info find
+    @Test
+    @Transactional
+    void findByTitleTest() {
+        System.out.println(gamesRepository.findByTitle("Assassin's Creed\\u2122"));
+    }
+
+    // getGameIdByTitle
+    @Test
+    @Transactional
+    void getGameIdByTitleTest(){
+        System.out.println(gamesRepository.getGameIdByTitle("Assassin's Creed\\u2122"));
     }
 }

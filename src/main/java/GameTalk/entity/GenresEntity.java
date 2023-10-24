@@ -1,5 +1,6 @@
 package GameTalk.entity;
 
+import GameTalk.entity.joinentity.GameGenreEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,10 +11,11 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "geners", schema = "YNC")
 @SequenceGenerator(name = "gener_seq", sequenceName = "gener_seq", allocationSize = 1, schema = "YNC")
-public class GenersEntity {
+public class GenresEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gener_seq")
     @Column(name = "gener_id")
@@ -22,6 +24,6 @@ public class GenersEntity {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "geners")
-    private List<GamesEntity> games;
+    @OneToMany(mappedBy = "geners")
+    private List<GameGenreEntity> gameGener;
 }
