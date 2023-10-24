@@ -10,17 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
-class GenersRepositoryTest {
+class GenresRepositoryTest {
 
     @Autowired
-    private GenersRepository repository;
+    private GenresRepository repository;
 
     // Insert Test
     @Test
     void insertTest() {
-        List<String> geners = Arrays.asList("Action", "Adventure");
-        for (String gener : geners) {
-            GenresEntity build = GenresEntity.builder().name(gener).build();
+        List<String> genres = Arrays.asList("Action", "Adventure");
+        for (String genre : genres) {
+            GenresEntity build = GenresEntity.builder().name(genre).build();
             repository.save(build);
         }
     }
@@ -39,10 +39,10 @@ class GenersRepositoryTest {
     // select All
     @Test
     void findAllTest() {
-        List<GenresEntity> genersEntities = repository.findAll();
+        List<GenresEntity> genresEntities = repository.findAll();
 
-        for (GenresEntity genresEntity : genersEntities) {
-            System.out.printf("Id: %3d    Name: %10s\n", genresEntity.getGenerId(), genresEntity.getName());
+        for (GenresEntity genresEntity : genresEntities) {
+            System.out.printf("Id: %3d    Name: %10s\n", genresEntity.getGenreId(), genresEntity.getName());
         }
     }
 
@@ -52,7 +52,7 @@ class GenersRepositoryTest {
         List<GenresEntity> genersEntities = repository.findByNameContainingIgnoreCase("a");
 
         for (GenresEntity genresEntity : genersEntities) {
-            System.out.printf("Id: %3d    Name: %10s\n", genresEntity.getGenerId(), genresEntity.getName());
+            System.out.printf("Id: %3d    Name: %10s\n", genresEntity.getGenreId(), genresEntity.getName());
         }
     }
 
@@ -62,10 +62,10 @@ class GenersRepositoryTest {
     void findByNameIgnoreCaseTest(){
         System.out.println(repository.findByNameIgnoreCase("Action"));
     }
-    //getGenerIdByTitleIgnoreCase test
+    //getGenreIdByTitleIgnoreCase test
     @Test
-    void getGenerIdByTitleIgnoreCaseTest() {
-        System.out.println(repository.getGenerIdByTitleIgnoreCase("Action"));
+    void getGenreIdByTitleIgnoreCaseTest() {
+        System.out.println(repository.getGenreIdByTitleIgnoreCase("Action"));
     }
 
 }

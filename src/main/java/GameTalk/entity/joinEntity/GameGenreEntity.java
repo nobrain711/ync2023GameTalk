@@ -1,8 +1,8 @@
-package GameTalk.entity.joinentity;
+package GameTalk.entity.joinEntity;
 
 import GameTalk.entity.GamesEntity;
 import GameTalk.entity.GenresEntity;
-import GameTalk.entity.joinentity.idclass.GameGenreEntityId;
+import GameTalk.entity.idclass.GameGenreEntityId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +25,5 @@ public class GameGenreEntity {
     @Id
     @ManyToOne
     @JoinColumn(name = "genre_id")
-    private GenresEntity geners;
+    private GenresEntity genres;
 }
