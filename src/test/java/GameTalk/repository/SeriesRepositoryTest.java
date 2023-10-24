@@ -4,6 +4,7 @@ import GameTalk.entity.SeriesEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,9 +57,9 @@ class SeriesRepositoryTest {
     // findByName Not DB Test
     @Test
     void findByNameTest2() {
-        SeriesEntity series = repository.findByName("");
+        Long seriesId = repository.findByName("");
 
-        if(series == null){
+        if(seriesId == null){
             System.out.println("존재하지 않는 시리즈 입니다.");
         }
     }

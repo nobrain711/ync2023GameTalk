@@ -1,12 +1,12 @@
 package GameTalk.repository;
 
 import GameTalk.entity.GamesEntity;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @SpringBootTest
 class GamesRepositoryTest {
@@ -26,9 +26,15 @@ class GamesRepositoryTest {
                         "Sparing Maria's life, Alta\u00efr confronts Robert in the camp of King Richard I (Marcel Jeannin) and exposes his crimes. Unsure of whom to believe, Richard suggests a duel to determine the truth, remarking that God will decide the victor. After Alta\u00efr mortally wounds him, Robert identifies Al Mualim as the final conspirator, revealing that the latter has betrayed both the Assassins and Templars to acquire the Apple. Alta\u00efr returns to Masyaf, where Al Mualim has used the Apple to enthrall the population, as part of his plan to end the Crusade and all conflict in the world by imposing order by force. With the help of Malik and several Assassins brought for backup, Alta\u00efr storms the citadel and confronts Al Mualim in the gardens, resisting the Apple's powers and killing his mentor. He then tries to destroy the artifact, but instead unlocks a map showing the locations of countless other Pieces of Eden around the world.\n" +
                         "In the present, the Assassins launch an unsuccessful attack on the Abstergo facility to rescue Desmond, resulting in most of them being killed. After completing Alta\u00efr's memories, Vidic reveals to Desmond that Abstergo is a front for the modern-day Templars, seeking to find the remaining Pieces of Eden. With Desmond no longer useful, Vidic's superiors order him killed, but Lucy, who is implied to be an Assassin mole, convinces them to keep him alive for further testing. Desmond is left alone in his room, where he discovers strange drawings describing an upcoming catastrophic event.\n")
                 .relesaeDate(LocalDate.parse("2008-04-09"))
-                .series(seriesRepository.findByName("Assassin's Creed"))
                 .build();
 
         gamesRepository.save(build);
+    }
+
+    // Game Info find
+    @Transactional
+    @Test
+    void findByTitleTest(){
+        System.out.println(gamesRepository.findByTitleContaining("Assassin's Creed"));
     }
 }

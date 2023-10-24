@@ -11,5 +11,5 @@ public interface SeriesRepository extends JpaRepository<SeriesEntity, Long> {
     @Query("SELECT s.sericeId " +
             "FROM SeriesEntity s " +
             "WHERE s.name = :name")
-    SeriesEntity findByName(@Param("name") String name);
+    Long findByName(@Param("name") String name);
 }

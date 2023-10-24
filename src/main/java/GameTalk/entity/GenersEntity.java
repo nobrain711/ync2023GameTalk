@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "geners", schema = "YNC")
-@SequenceGenerator(name = "gener_seq", sequenceName = "gener_seq", allocationSize = 1)
+@SequenceGenerator(name = "gener_seq", sequenceName = "gener_seq", allocationSize = 1, schema = "YNC")
 public class GenersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gener_seq")
