@@ -57,7 +57,7 @@ class SeriesRepositoryTest {
     // findByName Not DB Test
     @Test
     void findByNameTest2() {
-        Long seriesId = repository.findByName("");
+        Long seriesId = repository.findByName("").getSericeId();
 
         if(seriesId == null){
             System.out.println("존재하지 않는 시리즈 입니다.");

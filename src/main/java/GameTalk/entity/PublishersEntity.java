@@ -20,7 +20,7 @@ public class PublishersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "publisher_seq")
     @Column(name = "publisher_id")
-    private Long publisher_id;
+    private Long publisherId;
 
     @Column(name = "name", unique = true)
     private String name;
@@ -28,6 +28,6 @@ public class PublishersEntity {
     @Column(name = "url")
     private String url;
 
-    @OneToMany(mappedBy = "publishers")
+    @OneToMany(mappedBy = "publishers", fetch = FetchType.LAZY )
     private List<GamePublisherEntity> gamePublisher;
 }

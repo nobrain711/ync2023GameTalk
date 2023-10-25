@@ -20,14 +20,11 @@ public class DevelopersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "developer_seq")
     @Column(name = "developer_id", nullable = false)
-    private Long developer_id;
+    private Long developerId;
 
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @Column(name = "url")
     private String url;
-
-    @OneToMany(mappedBy = "developers", fetch = FetchType.LAZY)
-    private List<GameDeveloperEntity> gameDeveloper;
 }

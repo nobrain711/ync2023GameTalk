@@ -23,7 +23,4 @@ public class GenresEntity {
 
     @Column(name = "name", unique = true)
     private String name;
-
-    @OneToMany(mappedBy = "genres")
-    private List<GameGenreEntity> gameGenre;
 }

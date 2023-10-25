@@ -3,6 +3,7 @@ package GameTalk.entity;
 
 import GameTalk.entity.joinEntity.GameDeveloperEntity;
 import GameTalk.entity.joinEntity.GameGenreEntity;
+import GameTalk.entity.joinEntity.GamePlatformEntity;
 import GameTalk.entity.joinEntity.GamePublisherEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,12 +42,15 @@ public class GamesEntity {
     @JoinColumn(name = "series_id")
     private SeriesEntity series;
 
-    @OneToMany(mappedBy = "games")
+    @OneToMany(mappedBy = "games", fetch = FetchType.LAZY )
     private List<GameGenreEntity> gameGenre;
 
-    @OneToMany(mappedBy = "games")
+    @OneToMany(mappedBy = "games", fetch = FetchType.LAZY )
     private List<GamePublisherEntity> gamePublisher;
 
     @OneToMany(mappedBy = "games", fetch = FetchType.LAZY)
     private List<GameDeveloperEntity> gameDeveloper;
+
+    @OneToMany(mappedBy = "games", fetch = FetchType.LAZY )
+    private List<GamePlatformEntity> gamePlatform;
 }

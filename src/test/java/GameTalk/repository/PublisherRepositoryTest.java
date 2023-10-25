@@ -34,7 +34,7 @@ class PublisherRepositoryTest {
         List<PublishersEntity> publishersEntities = repository.findAll();
         for(PublishersEntity publishersEntity: publishersEntities){
             System.out.println(
-                    "Id: "+publishersEntity.getPublisher_id()+
+                    "Id: "+publishersEntity.getPublisherId()+
                     " name: " +publishersEntity.getName()+
                     " url: "+publishersEntity.getUrl());
         }
@@ -48,7 +48,7 @@ class PublisherRepositoryTest {
         List<PublishersEntity> publishersEntities = repository.findByNameContainingIgnoreCase("b");
         for(PublishersEntity publishersEntity: publishersEntities){
             System.out.println(
-                    "Id: "+publishersEntity.getPublisher_id()+
+                    "Id: "+publishersEntity.getPublisherId()+
                             " name: " +publishersEntity.getName()+
                             " url: "+publishersEntity.getUrl());
         }
