@@ -14,7 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "publishers", schema = "YNC")
-@SequenceGenerator(name = "publisher_seq", sequenceName = "publisher_seq", allocationSize = 1, schema = "YNC")
+@SequenceGenerator(name = "publisher_seq", sequenceName = "publisher_seq",
+        allocationSize = 1, schema = "YNC")
 public class PublishersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "publisher_seq")

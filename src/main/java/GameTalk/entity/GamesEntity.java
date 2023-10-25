@@ -1,6 +1,7 @@
 package GameTalk.entity;
 
 
+import GameTalk.entity.joinEntity.GameDeveloperEntity;
 import GameTalk.entity.joinEntity.GameGenreEntity;
 import GameTalk.entity.joinEntity.GamePublisherEntity;
 import jakarta.persistence.*;
@@ -45,4 +46,7 @@ public class GamesEntity {
 
     @OneToMany(mappedBy = "games")
     private List<GamePublisherEntity> gamePublisher;
+
+    @OneToMany(mappedBy = "games", fetch = FetchType.LAZY)
+    private List<GameDeveloperEntity> gameDeveloper;
 }
