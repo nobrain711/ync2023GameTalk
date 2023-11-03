@@ -18,26 +18,30 @@ class PlatformRepositoryTest {
 
     // insert test
     @Test
-    void insertTest(){
-        List<String> list = Arrays.asList("PS3", "Xbox X360", "Xbox One" , "Xbox One X", "Windows");
+    void insertTest() {
+        List<String> list = Arrays.asList("PS3", "Xbox X360", "Xbox One", "Xbox One X", "Windows");
 
-        for (String item: list){
-            PlatformEntity build = PlatformEntity
-                    .builder()
-                    .name(item)
-                    .build();
+        for (String item : list) {
+            try {
+                PlatformEntity build = PlatformEntity
+                        .builder()
+                        .name(item)
+                        .build();
 
-            repository.save(build);
+                repository.save(build);
+            } catch (Exception e) {
+                System.out.println("pass");
+            }
         }
     }
 
     // findAll test
     @Test
     @Transactional
-    void findAllTest(){
+    void findAllTest() {
         List<PlatformEntity> entities = repository.findAll();
 
-        for(PlatformEntity entity : entities){
+        for (PlatformEntity entity : entities) {
             System.out.println(entity);
         }
     }

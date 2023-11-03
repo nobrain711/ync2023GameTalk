@@ -1,22 +1,30 @@
 package GameTalk.repository;
 
+import GameTalk.DTO.game.GaemListDTO;
 import GameTalk.entity.*;
 import GameTalk.entity.joinEntity.GameDeveloperEntity;
 import GameTalk.entity.joinEntity.GameGenreEntity;
 import GameTalk.entity.joinEntity.GamePlatformEntity;
 import GameTalk.entity.joinEntity.GamePublisherEntity;
+import GameTalk.repository.QueryDSL.CustomGameRepositoryImpl;
 import GameTalk.repository.joinEntity.GameDeveloperRepository;
 import GameTalk.repository.joinEntity.GameGenreRepostiory;
 import GameTalk.repository.joinEntity.GamePlatformRepository;
 import GameTalk.repository.joinEntity.GamePublisherReposiory;
+import com.querydsl.core.Tuple;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @SpringBootTest
 class GamesRepositoryTest {
@@ -43,6 +51,10 @@ class GamesRepositoryTest {
     private GamePublisherReposiory gamePublisherReposiory;
     @Autowired
     private GamePlatformRepository gamePlatformRepository;
+
+    // Query DSL repository
+    @Autowired
+    private CustomGameRepositoryImpl customGameRepository;
 
     // Series Insert info
     SeriesEntity seriesCheck(String name) {
@@ -153,9 +165,9 @@ class GamesRepositoryTest {
             gameDeveloperRepository.save(build);
         }
 
-        for (List<String> publisher : publishers){
+        for (List<String> publisher : publishers) {
             PublishersEntity publishersEntity = publisherRepository.findByNameIgnoreCase(publisher.get(0));
-            if(publishersEntity == null){
+            if (publishersEntity == null) {
                 // insert publisher
                 PublishersEntity build = PublishersEntity
                         .builder()
@@ -179,9 +191,9 @@ class GamesRepositoryTest {
         }
 
         // insert game_platform
-        for(String platform : platforms){
+        for (String platform : platforms) {
             PlatformEntity platformEntity = platformRepository.findByNameIgnoreCase(platform);
-            if(platformEntity == null){
+            if (platformEntity == null) {
                 // insert platform
                 PlatformEntity build = PlatformEntity
                         .builder()
@@ -191,7 +203,6 @@ class GamesRepositoryTest {
                 platformRepository.save(build);
                 platformEntity = platformRepository.findByNameIgnoreCase(platform);
             }
-
 
 
             GamePlatformEntity build = GamePlatformEntity
@@ -269,11 +280,11 @@ class GamesRepositoryTest {
             System.out.print(gamePlatform.getPlatforms().getName() + " ");
     }
 
-    // getGameIdByTitle
+    // Game List Test
     @Test
     @Transactional
-    void getGameIdByTitleTest() {
-        System.out.println(gamesRepository.getGameIdByTitle("Assassin's Creed\\u2122"));
+    void paging() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("gameId").descending());
+        List<GaemListDTO> paging = customGameRepository.paging();
     }
-
 }

@@ -1,6 +1,7 @@
 package GameTalk.repository;
 
 import GameTalk.entity.SeriesEntity;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,7 @@ class SeriesRepositoryTest {
 
     // UNIQUE TEST
     @Test
+    @Transactional
     void uniqueTest() {
         try {
             SeriesEntity build = SeriesEntity
