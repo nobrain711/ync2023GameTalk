@@ -1,5 +1,6 @@
 package GameTalk.entity;
 
+import GameTalk.entity.joinEntity.GameGenreEntity;
 import GameTalk.entity.joinEntity.GamePlatformEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,4 +25,7 @@ public class PlatformEntity {
 
     @Column(name = "name", unique = true)
     private String  name;
+
+    @OneToMany(mappedBy = "platforms")
+    private List<GamePlatformEntity> gamePlatform;
 }

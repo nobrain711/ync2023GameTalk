@@ -1,12 +1,13 @@
 package GameTalk.repository.QueryDSL;
 
-import GameTalk.DTO.game.GaemListDTO;
 import GameTalk.entity.*;
 import GameTalk.entity.joinEntity.QGameDeveloperEntity;
 import GameTalk.entity.joinEntity.QGameGenreEntity;
 import GameTalk.entity.joinEntity.QGamePlatformEntity;
 import GameTalk.entity.joinEntity.QGamePublisherEntity;
-import com.querydsl.core.types.Projections;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,14 +15,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.list;
 
 @Log4j2
 @Repository
 @RequiredArgsConstructor
 public class CustomGameRepositoryImpl implements CustomGameRepository {
+    // Query
     private final JPAQueryFactory queryFactory;
+
     // Root Entity
     QGamesEntity games = QGamesEntity.gamesEntity;
     QSeriesEntity series = QSeriesEntity.seriesEntity;
@@ -38,32 +39,46 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
 
     // game page List
     @Override
-    public List<GaemListDTO> paging() {
-        List<GaemListDTO> gameList = queryFactory
+    public List<Tuple> paging() {
+        List<Tuple> gameList = queryFactory
                 .select(games.gameId,
                         games.title,
                         games.relesaeDate,
                         series.name,
-                        genres.name,
-                        platform.name
+                        JPAExpressions.select(
+                                        Expressions.stringTemplate(
+                                                "LISTAGG({0}, ', ') WITHIN GROUP ( ORDER BY {0})", genres.name
+                                        ))
+                                .from(genres)
+                                .innerJoin(genres.gameGenere, gameGenre)
+                                .where(games.gameId.eq(gameGenre.games.gameId)),
+                        JPAExpressions.select(
+                                        Expressions.stringTemplate(
+                                                "LISTAGG({0}, ', ') WITHIN GROUP ( ORDER BY {0})", developers.name
+                                        ))
+                                .from(developers)
+                                .innerJoin(developers.gameDeveloper, gameDeveloper)
+                                .where(games.gameId.eq(gameDeveloper.games.gameId)),
+                        JPAExpressions.select(
+                                Expressions.stringTemplate(
+                                        "LISTAGG({0}, ', ') WITHIN GROUP (ORDER BY {0})", publishers.name
+                                ))
+                                .from(publishers)
+                                .innerJoin(publishers.gamePublisher, gamePublisher)
+                                .where(games.gameId.eq(gamePublisher.games.gameId)),
+                        JPAExpressions.select(
+                                Expressions.stringTemplate(
+                                        "LISTAGG({0}, ', ') WITHIN GROUP (ORDER BY {0})", platform.name
+                                ))
+                                .from(platform)
+                                .innerJoin(platform.gamePlatform, gamePlatform)
+                                .where(games.gameId.eq(gamePlatform.games.gameId))
                 )
                 .from(games)
-                .leftJoin(series)
-                .on(series.sericeId.eq(games.series.sericeId))
-                .innerJoin(gameGenre)
-                .on(games.gameId.eq(gameGenre.games.gameId))
-                .innerJoin(genres)
-                .on(genres.genreId.eq(gameGenre.genres.genreId))
-                .innerJoin(gamePlatform)
-                .on(games.gameId.eq(gamePlatform.games.gameId))
-                .innerJoin(platform)
-                .on(platform.platformId.eq(gamePlatform.platforms.platformId))
-                .distinct()
+                .innerJoin(games.series, series)
                 .orderBy(games.gameId.desc())
-                .transform(groupBy(games.gameId)
-                        .list(Projections.constructor(GaemListDTO.class,
-                                games.gameId, games.title, games.relesaeDate, series.name,
-                                list(genres.name),list(platform.name))));
+                .groupBy(games.gameId, games.title, games.relesaeDate, series.name)
+                .fetch();
         return gameList;
     }
 }

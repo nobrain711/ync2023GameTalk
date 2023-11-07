@@ -1,6 +1,7 @@
 package GameTalk.entity;
 
 import GameTalk.entity.joinEntity.GameDeveloperEntity;
+import GameTalk.entity.joinEntity.GamePlatformEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +28,7 @@ public class DevelopersEntity {
 
     @Column(name = "url")
     private String url;
+
+    @OneToMany(mappedBy = "developers")
+    private List<GameDeveloperEntity> gameDeveloper;
 }

@@ -19,25 +19,25 @@ public class GaemListDTO {
     private LocalDate releaseDate;
     private String series;
     private List<String> genres;
-    //    private List<String> developers;
-//    private List<String> publishers;
+    private List<String> developers;
+    private List<String> publishers;
     private List<String> platforms;
 
-    private List<String> ListDistinct (List<String> list){
+    private List<String> ListDistinct(List<String> list) {
         return list.stream().distinct().collect(Collectors.toList());
     }
+
     public GaemListDTO(Long gameId, String title, LocalDate releaseDate, String series,
-//                       , List<String> developers, List<String> publishers,
-                       List<String> genres, List<String> platforms
+                       List<String> genres, List<String> developers,
+                       List<String> publishers, List<String> platforms
     ) {
         this.gameId = gameId;
         this.title = title;
         this.releaseDate = releaseDate;
         this.series = series;
-        this.genres = ListDistinct(genres);
-//        this.developers = developers;
-//        this.publishers = publishers;
-        this.platforms = ListDistinct(platforms);
-        //        this.gameInfoDTO = new GameInfoDTO(genres, publishers, platforms, developers);
+        this.genres = genres;
+        this.developers = developers;
+        this.publishers = publishers;
+        this.platforms = platforms;
     }
 }

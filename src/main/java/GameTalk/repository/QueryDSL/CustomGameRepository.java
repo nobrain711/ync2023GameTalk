@@ -1,9 +1,9 @@
 package GameTalk.repository.QueryDSL;
 
-import GameTalk.DTO.game.GaemListDTO;
+import com.querydsl.core.Tuple;
 
 import java.util.List;
 
 public interface CustomGameRepository {
-    List<GaemListDTO> paging();
+    List<Tuple> paging();
 }

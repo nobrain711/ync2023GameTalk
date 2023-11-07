@@ -285,6 +285,6 @@ class GamesRepositoryTest {
     @Transactional
     void paging() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("gameId").descending());
-        List<GaemListDTO> paging = customGameRepository.paging();
+        List<Tuple> paging = customGameRepository.paging();
     }
 }
