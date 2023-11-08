@@ -14,7 +14,12 @@ import java.util.stream.Collectors;
  * gameId: 게임 식별 번호
  * title: 게임 제목
  * releaseDate: 게임 출시일
- * GameInfoDto: 장르, 개발사, 배급사, dlc 정보
+ * series: 게임 시리즈
+ * genres: 게임 장르
+ * publishers: 게임 배급사
+ * developers: 게임 개발사
+ * platforms: 게임 플레이 가능한 플랫폼
+ * dlcs: 게임 DLC 혹은 DLC의 부모게임
  */
 @ToString
 public class GaemListDTO {
@@ -29,9 +34,9 @@ public class GaemListDTO {
 
     private List<String> stringToList(String input) {
         List<String> result;
-        if(input.contains("\" ") == true && input != null){
+        if (input.contains("\" ") == true && input != null) {
             result = Arrays.asList(input.split("\" "));
-        }else {
+        } else {
             result = Arrays.asList(input);
         }
         return result;
