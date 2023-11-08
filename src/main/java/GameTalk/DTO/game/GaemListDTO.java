@@ -1,8 +1,12 @@
 package GameTalk.DTO.game;
 
 import lombok.ToString;
+import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,21 +27,26 @@ public class GaemListDTO {
     private List<String> publishers;
     private List<String> platforms;
 
-    private List<String> ListDistinct(List<String> list) {
-        return list.stream().distinct().collect(Collectors.toList());
+    private List<String> stringToList(String input) {
+        List<String> result;
+        if(input.contains("\" ") == true && input != null){
+            result = Arrays.asList(input.split("\" "));
+        }else {
+            result = Arrays.asList(input);
+        }
+        return result;
     }
 
     public GaemListDTO(Long gameId, String title, LocalDate releaseDate, String series,
-                       List<String> genres, List<String> developers,
-                       List<String> publishers, List<String> platforms
-    ) {
+                       String genres, String developers,
+                       String publishers, String platforms) {
         this.gameId = gameId;
         this.title = title;
         this.releaseDate = releaseDate;
         this.series = series;
-        this.genres = genres;
-        this.developers = developers;
-        this.publishers = publishers;
-        this.platforms = platforms;
+        this.genres = stringToList(genres);
+        this.developers = stringToList(developers);
+        this.publishers = stringToList(publishers);
+        this.platforms = stringToList(platforms);
     }
 }

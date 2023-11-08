@@ -1,4 +1,6 @@
 package GameTalk.service;
 
-public class GameService{
+
+public interface GameService {
+
 }

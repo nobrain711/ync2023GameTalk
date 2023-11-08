@@ -1,6 +1,7 @@
 package GameTalk.repository;
 
 import GameTalk.DTO.game.GaemListDTO;
+import GameTalk.DTO.game.GameDetailsDTO;
 import GameTalk.entity.*;
 import GameTalk.entity.joinEntity.GameDeveloperEntity;
 import GameTalk.entity.joinEntity.GameGenreEntity;
@@ -285,6 +286,12 @@ class GamesRepositoryTest {
     @Transactional
     void paging() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("gameId").descending());
-        List<Tuple> paging = customGameRepository.paging();
+        List<GaemListDTO> paging = customGameRepository.paging();
+    }
+
+    @Test
+    @Transactional
+    void Details(){
+        GameDetailsDTO details = customGameRepository.detail(1L);
     }
 }
