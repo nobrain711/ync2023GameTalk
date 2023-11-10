@@ -81,7 +81,7 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
 
     // game page List
     @Override
-    public List<GaemListDTO> paging() {
+    public List<GaemListDTO> getList() {
         List<GaemListDTO> result = queryFactory
                 .select(games.gameId,
                         games.title,

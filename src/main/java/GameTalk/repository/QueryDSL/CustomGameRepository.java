@@ -6,6 +6,9 @@ import GameTalk.DTO.game.GameDetailsDTO;
 import java.util.List;
 
 public interface CustomGameRepository {
-    List<GaemListDTO> paging();
+
+    // game page List
+    List<GaemListDTO> getList();
+
     GameDetailsDTO detail(Long gameId);
 }

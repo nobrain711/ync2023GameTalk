@@ -1,6 +1,7 @@
 package GameTalk.DTO.game;
 
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import java.util.Objects;
  * platforms: 게임 플레이 가능한 플랫폼
  * dlcs: 게임 DLC 혹은 DLC의 부모게임
  */
+@Getter
 public class GameDetailsDTO {
     private Long gameId;
     private String title;
