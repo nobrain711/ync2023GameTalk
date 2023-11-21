@@ -1,14 +1,13 @@
 package GameTalk.repository.QueryDSL;
 
-import GameTalk.DTO.game.GaemListDTO;
 import GameTalk.DTO.game.GameDetailsDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CustomGameRepository {
 
     // game page List
-    List<GaemListDTO> getList();
+    Page<Object[]> getList(Pageable pageable);
 
     GameDetailsDTO detail(Long gameId);
 }

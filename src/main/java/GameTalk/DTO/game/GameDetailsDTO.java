@@ -1,13 +1,10 @@
 package GameTalk.DTO.game;
 
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /*
  * gameId: 게임 식별 번호
@@ -43,6 +40,7 @@ public class GameDetailsDTO {
         }
         return result;
     }
+
 
     public GameDetailsDTO(Long gameId, String title, String info, LocalDate releaseDate,
                           String series, String genres, String developers, String publishers, String platforms) {

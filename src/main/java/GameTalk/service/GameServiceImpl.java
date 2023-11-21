@@ -2,8 +2,9 @@ package GameTalk.service;
 
 import GameTalk.DTO.Page.PageRequestDTO;
 import GameTalk.DTO.Page.PageResultDTO;
-import GameTalk.DTO.game.GaemListDTO;
+import GameTalk.DTO.game.GameListDTO;
 import GameTalk.DTO.game.GameDetailsDTO;
+import GameTalk.entity.SeriesEntity;
 import GameTalk.repository.*;
 import GameTalk.repository.QueryDSL.CustomGameRepositoryImpl;
 import GameTalk.repository.joinEntity.GameDeveloperRepository;
@@ -17,11 +18,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.function.Function;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
 public class GameServiceImpl implements GameService {
     /* Repository*/
+    private final SeriesRepository seriesRepository;
     private final GamesRepository gamesRepository;
     private final GenresRepository genresRepository;
     private final DeveloperRepository developerRepository;
@@ -36,7 +41,14 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void register(GameDetailsDTO dto) {
+        Map<String, Object> dtoToEntity = dtoToEntity(dto);
 
+        SeriesEntity series = (SeriesEntity) dtoToEntity.get("series");
+        try {
+            seriesRepository.save(series);
+        }catch (Exception e){
+            
+        }
     }
 
     @Override
@@ -47,8 +59,10 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public PageResultDTO<GaemListDTO, Object[]> getList(PageRequestDTO pageRequestDTO){
-        Pageable pageable = pageRequestDTO.getPageable(Sort.by("gameId").descending());
-        Page<Object[]> result = customGameRepository.getList(pageable);
+    public PageResultDTO<GameListDTO, Object[]> getList(PageRequestDTO pageRequestDTO) {
+//        Pageable pageable = pageRequestDTO.getPageable(Sort.by("gameId").descending());
+//        Page<Object[]> result = customGameRepository.getList(pageable);
+//
+        return result;
     }
 }

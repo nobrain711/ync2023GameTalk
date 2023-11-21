@@ -1,14 +1,10 @@
 package GameTalk.DTO.game;
 
 import lombok.ToString;
-import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /*
  * gameId: 게임 식별 번호
@@ -22,7 +18,7 @@ import java.util.stream.Collectors;
  * dlcs: 게임 DLC 혹은 DLC의 부모게임
  */
 @ToString
-public class GaemListDTO {
+public class GameListDTO {
     private Long gameId;
     private String title;
     private LocalDate releaseDate;
@@ -42,7 +38,7 @@ public class GaemListDTO {
         return result;
     }
 
-    public GaemListDTO(Long gameId, String title, LocalDate releaseDate, String series,
+    public GameListDTO(Long gameId, String title, LocalDate releaseDate, String series,
                        String genres, String developers,
                        String publishers, String platforms) {
         this.gameId = gameId;

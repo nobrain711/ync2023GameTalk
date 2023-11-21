@@ -3,23 +3,65 @@ package GameTalk.service;
 
 import GameTalk.DTO.Page.PageRequestDTO;
 import GameTalk.DTO.Page.PageResultDTO;
-import GameTalk.DTO.game.GaemListDTO;
+import GameTalk.DTO.game.GameListDTO;
 import GameTalk.DTO.game.GameDetailsDTO;
-import GameTalk.entity.GamesEntity;
+import GameTalk.entity.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public interface GameService {
-    default void dtoToGamesEntity(GameDetailsDTO dto) {
-
-        // games
-        GamesEntity games = GamesEntity.builder()
-                .title(dto.getTitle())
-                .info(dto.getInfo())
-                .relesaeDate(dto.getReleaseDate())
-                .build();
-    }
 
     void register(GameDetailsDTO dto);
+
     GameDetailsDTO get(Long gameId);
 
-    PageResultDTO<GaemListDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
+    PageResultDTO<GameListDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
+
+    default Map<String, Object> dtoToEntity(GameDetailsDTO gameDetailsDTO) {
+        Map<String, Object> entityMap = new HashMap<>();
+
+        // serice
+        SeriesEntity seriesEntity = SeriesEntity.builder().name(gameDetailsDTO.getSeries()).build();
+        entityMap.put("series", seriesEntity);
+
+        // games
+        GamesEntity gamesEntity = GamesEntity.builder()
+                .title(gameDetailsDTO.getTitle())
+                .info(gameDetailsDTO.getInfo())
+                .relesaeDate(gameDetailsDTO.getReleaseDate())
+                .build();
+        entityMap.put("game", gamesEntity);
+
+        // genre
+        ArrayList<GenresEntity> genresEntities = new ArrayList<>();
+        for (String genre : gameDetailsDTO.getGenres()) {
+            genresEntities.add(GenresEntity.builder().name(genre).build());
+        }
+        entityMap.put("genres", genresEntities);
+
+        // developer
+        ArrayList<DevelopersEntity> developersEntities = new ArrayList<>();
+        for (String developer : gameDetailsDTO.getDevelopers()) {
+            developersEntities.add(DevelopersEntity.builder().name(developer).build());
+        }
+        entityMap.put("developers", developersEntities);
+
+        // publisher
+        ArrayList<PublishersEntity> publishersEntities = new ArrayList<>();
+        for (String publisher : gameDetailsDTO.getPublishers()) {
+            publishersEntities.add(PublishersEntity.builder().name(publisher).build());
+        }
+        entityMap.put("publisher", publishersEntities);
+
+        // platform
+        ArrayList<PlatformEntity> platformEntities = new ArrayList<>();
+        for (String platform : gameDetailsDTO.getPlatforms()) {
+            platformEntities.add(PlatformEntity.builder().name(platform).build());
+        }
+        entityMap.put("platform", platformEntities);
+
+        return entityMap;
+    }
 }
