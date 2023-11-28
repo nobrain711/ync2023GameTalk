@@ -1,11 +1,11 @@
 package GameTalk.DTO.Page;
 
+import GameTalk.DTO.game.GameListDTO;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,7 +19,7 @@ public class PageResultDTO<DTO, EN> {
     private boolean prev, next;
     private List<Integer> pageList;
 
-    public PageResultDTO(Page<EN> result, Function<EN, DTO> fn) {
+    public PageResultDTO(Page<Object[]> result, List<GameListDTO> fn) {
         dtoList = result.stream().map(fn).collect(Collectors.toList());
         totalPage = result.getTotalPages();
         makePageList(result.getPageable());

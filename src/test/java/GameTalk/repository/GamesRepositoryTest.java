@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class GamesRepositoryTest {
@@ -284,8 +285,10 @@ class GamesRepositoryTest {
     @Test
     @Transactional
     void paging() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("gameId").descending());
-        Page<Object[]> list = customGameRepository.getList(pageable);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("gameId").ascending());
+        Page<Object[]> page = customGameRepository.getList(pageable);
+
+        System.out.println(page.getTotalPages());
 
     }
 

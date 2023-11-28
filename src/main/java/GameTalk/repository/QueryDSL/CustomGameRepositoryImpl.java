@@ -108,15 +108,9 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(games.count())
-                .from(gameGenre)
-                .where(gameGenre.games.in(
-                        JPAExpressions.select(games)
-                                .from(games)
-                ))
-                .groupBy(games);
+                .from(games);
 
-        return PageableExecutionUtils.getPage(result.stream().map(t -> t.toArray()).collect(Collectors.toList()),
-                pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, countQuery::fetchOne);
     }
 
     @Override
