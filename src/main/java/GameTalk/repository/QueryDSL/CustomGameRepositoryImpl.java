@@ -46,8 +46,10 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     QGamePublisherEntity gamePublisher = QGamePublisherEntity.gamePublisherEntity;
     QGamePlatformEntity gamePlatform = QGamePlatformEntity.gamePlatformEntity;
 
-    // SubQuery
-    // Genre
+    /*genres SubQuery
+     * game에 해당하는 genres조회
+     * String으로 반환
+     * */
     JPQLQuery<String> genreSub = JPAExpressions.select(
                     Expressions.stringTemplate(
                             "LISTAGG({0}, ', ') WITHIN GROUP ( ORDER BY {0})", genres.name
@@ -57,7 +59,11 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
             .where(games.gameId.eq(gameGenre.games.gameId));
 
 
-    // Developer
+    /* developer SubQuery
+     * String으로 반환
+     * game에 해당하는 developer의 name url를 LISTAGG를 이용하여서 반환
+     * example "comName1@comURL1, comName2@comURL2
+     * */
     JPQLQuery<String> developerSub = JPAExpressions.select(
                     Expressions.stringTemplate(
                             "LISTAGG({0}||'@'||{1}, ', ') WITHIN GROUP ( ORDER BY {0})",
@@ -68,7 +74,11 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
             .where(games.gameId.eq(gameDeveloper.games.gameId));
 
 
-    // Publisher
+    /* publishers SubQuery
+     * String으로 반환
+     * game에 해당하는 publishers의 name url를 LISTAGG를 이용하여서 반환
+     * example "comName1@comURL1, comName2@comURL2
+     * */
     JPQLQuery<String> publisherSub = JPAExpressions.select(
                     Expressions.stringTemplate(
                             "LISTAGG({0}||'@'||{1}, ', ') WITHIN GROUP (ORDER BY {0})",
@@ -77,9 +87,10 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
             .innerJoin(publishers.gamePublisher, gamePublisher)
             .where(games.gameId.eq(gamePublisher.games.gameId));
 
-    // Name URL Return
-//    JPQLQuery<Tuple>
-    // Platform
+    /*genres SubQuery
+     * game에 해당하는 genres조회
+     * String으로 반환
+     * */
     JPQLQuery<String> platformSub = JPAExpressions.select(
                     Expressions.stringTemplate(
                             "LISTAGG({0}, ', ') WITHIN GROUP (ORDER BY {0})", platform.name
@@ -88,23 +99,9 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
             .innerJoin(platform.gamePlatform, gamePlatform)
             .where(games.gameId.eq(gamePlatform.games.gameId));
 
-    // game page List
+    /* game list page*/
     @Override
     public List<GameListDTO> getList() {
-//        List<Tuple> result = queryFactory
-//                .select(games.gameId,
-//                        games.title,
-//                        games.relesaeDate,
-//                        JPAExpressions.select(
-//                                        Expressions.list(genres.name))
-//                                .from(genres)
-//                                .innerJoin(gameGenre.genres, genres)
-//                                .where(gameGenre.games.gameId.eq(games.gameId))
-//
-//                ).from(games)
-//                .leftJoin(series)
-//                .on(series.sericeId.eq(games.series.sericeId))
-//                .fetch();
         List<GameListDTO> result = queryFactory
                 .select(games.gameId,
                         games.title,
