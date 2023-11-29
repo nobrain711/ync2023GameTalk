@@ -1,9 +1,9 @@
 package GameTalk.DTO.game;
 
+import GameTalk.DTO.game.Info.DeveloperDTO;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -24,30 +24,30 @@ public class GameListDTO {
     private LocalDate releaseDate;
     private String series;
     private List<String> genres;
-    private List<String> developers;
-    private List<String> publishers;
-    private List<String> platforms;
+    private List<DeveloperDTO> developers;
+//    private List<String> publishers;
+//    private List<String> platforms;
 
-    private List<String> stringToList(String input) {
-        List<String> result;
-        if (input.contains("\" ") == true && input != null) {
-            result = Arrays.asList(input.split("\" "));
-        } else {
-            result = Arrays.asList(input);
-        }
-        return result;
-    }
+//    private List<String> stringToList(String input) {
+//        List<String> result;
+//        if (input.contains("\" ") == true && input != null) {
+//            result = Arrays.asList(input.split("\" "));
+//        } else {
+//            result = Arrays.asList(input);
+//        }
+//        return result;
+//    }
 
     public GameListDTO(Long gameId, String title, LocalDate releaseDate, String series,
-                       String genres, String developers,
-                       String publishers, String platforms) {
+                       List<String> genres, List<DeveloperDTO> developers/*,
+                       String publishers, String platforms*/) {
         this.gameId = gameId;
         this.title = title;
         this.releaseDate = releaseDate;
         this.series = series;
-        this.genres = stringToList(genres);
-        this.developers = stringToList(developers);
-        this.publishers = stringToList(publishers);
-        this.platforms = stringToList(platforms);
+        this.genres = genres;
+        this.developers = developers;
+//        this.publishers = stringToList(publishers);
+//        this.platforms = stringToList(platforms);
     }
 }

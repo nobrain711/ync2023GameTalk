@@ -12,6 +12,8 @@ import GameTalk.repository.joinEntity.GameDeveloperRepository;
 import GameTalk.repository.joinEntity.GameGenreRepostiory;
 import GameTalk.repository.joinEntity.GamePlatformRepository;
 import GameTalk.repository.joinEntity.GamePublisherReposiory;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.group.Group;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -285,11 +287,11 @@ class GamesRepositoryTest {
     @Test
     @Transactional
     void paging() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("gameId").ascending());
-        Page<Object[]> page = customGameRepository.getList(pageable);
+        List<GameListDTO> list = customGameRepository.getList();
 
-        System.out.println(page.getTotalPages());
-
+        for(GameListDTO item : list){
+            System.out.println(item);
+        }
     }
 
     @Test

@@ -49,7 +49,7 @@ public class GameServiceImpl implements GameService {
         SeriesEntity series = (SeriesEntity) dtoToEntity.get("series");
         try {
             seriesRepository.save(series);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info(e.getMessage());
         }
     }
@@ -63,21 +63,22 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public PageResultDTO<GameListDTO, Object[]> getList(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = pageRequestDTO.getPageable(Sort.by("gameId").descending());
-        Page<Object[]> result = customGameRepository.getList(pageable);
-
-        List<GameListDTO> gameListDTO = result.getContent().stream()
-                .map(t -> new GameListDTO(
-                        (Long) t[0],
-                        (String) t[1],
-                        (LocalDate) t[2],
-                        (String) t[3],
-                        (String) t[4],
-                        (String) t[5],
-                        (String) t[6],
-                        (String) t[7]
-                ))
-                .collect(Collectors.toList());
-        return new PageResultDTO<>(result,gameListDTO);
+//        Pageable pageable = pageRequestDTO.getPageable(Sort.by("gameId").descending());
+//        Page<Object[]> result = customGameRepository.getList(pageable);
+//
+//        List<GameListDTO> gameListDTO = result.getContent().stream()
+//                .map(t -> new GameListDTO(
+//                        (Long) t[0],
+//                        (String) t[1],
+//                        (LocalDate) t[2],
+//                        (String) t[3],
+//                        (String) t[4],
+//                        (String) t[5],
+//                        (String) t[6],
+//                        (String) t[7]
+//                ))
+//                .collect(Collectors.toList());
+//        return new PageResultDTO<>(result,gameListDTO);
+        return null;
     }
 }

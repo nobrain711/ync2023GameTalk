@@ -1,29 +1,26 @@
 package GameTalk.repository.QueryDSL;
 
 import GameTalk.DTO.game.GameDetailsDTO;
+import GameTalk.DTO.game.GameListDTO;
+import GameTalk.DTO.game.Info.DeveloperDTO;
 import GameTalk.entity.*;
 import GameTalk.entity.joinEntity.QGameDeveloperEntity;
 import GameTalk.entity.joinEntity.QGameGenreEntity;
 import GameTalk.entity.joinEntity.QGamePlatformEntity;
 import GameTalk.entity.joinEntity.QGamePublisherEntity;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 
 
 @Log4j2
@@ -51,16 +48,17 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     // Genre
     JPQLQuery<String> genreSub = JPAExpressions.select(
                     Expressions.stringTemplate(
-                            "LISTAGG({0}, '\" ') WITHIN GROUP ( ORDER BY {0})", genres.name
+                            "LISTAGG({0}, ', ') WITHIN GROUP ( ORDER BY {0})", genres.name
                     ))
             .from(genres)
             .innerJoin(genres.gameGenere, gameGenre)
             .where(games.gameId.eq(gameGenre.games.gameId));
 
+
     // Developer
     JPQLQuery<String> developerSub = JPAExpressions.select(
                     Expressions.stringTemplate(
-                            "LISTAGG({0}, '\" ') WITHIN GROUP ( ORDER BY {0})", developers.name
+                            "LISTAGG({0}, ', ') WITHIN GROUP ( ORDER BY {0})", developers.name
                     ))
             .from(developers)
             .innerJoin(developers.gameDeveloper, gameDeveloper)
@@ -70,7 +68,7 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     // Publisher
     JPQLQuery<String> publisherSub = JPAExpressions.select(
                     Expressions.stringTemplate(
-                            "LISTAGG({0}, '\" ') WITHIN GROUP (ORDER BY {0})", publishers.name
+                            "LISTAGG({0}, ', ') WITHIN GROUP (ORDER BY {0})", publishers.name
                     ))
             .from(publishers)
             .innerJoin(publishers.gamePublisher, gamePublisher)
@@ -81,7 +79,7 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     // Platform
     JPQLQuery<String> platformSub = JPAExpressions.select(
                     Expressions.stringTemplate(
-                            "LISTAGG({0}, '\" ') WITHIN GROUP (ORDER BY {0})", platform.name
+                            "LISTAGG({0}, ', ') WITHIN GROUP (ORDER BY {0})", platform.name
                     ))
             .from(platform)
             .innerJoin(platform.gamePlatform, gamePlatform)
@@ -89,28 +87,43 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
 
     // game page List
     @Override
-    public Page<Object[]> getList(Pageable pageable) {
-        List<Tuple> result = queryFactory
+    public List<GameListDTO> getList() {
+//        List<Tuple> result = queryFactory
+//                .select(games.gameId,
+//                        games.title,
+//                        games.relesaeDate,
+//                        JPAExpressions.select(
+//                                        Expressions.list(genres.name))
+//                                .from(genres)
+//                                .innerJoin(gameGenre.genres, genres)
+//                                .where(gameGenre.games.gameId.eq(games.gameId))
+//
+//                ).from(games)
+//                .leftJoin(series)
+//                .on(series.sericeId.eq(games.series.sericeId))
+//                .fetch();
+        List<GameListDTO> result = queryFactory
                 .select(games.gameId,
                         games.title,
                         games.relesaeDate,
                         series.name,
-                        genreSub,
-                        developerSub,
-                        publisherSub,
-                        platformSub)
+                        genres.name,
+                        developers.name,
+                        developers.url)
                 .from(games)
-                .innerJoin(games.series, series)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(games.gameId.desc())
-                .fetch();
+                .leftJoin(games.series, series)
+                .leftJoin(games.gameGenre, gameGenre)
+                .innerJoin(genres)
+                .on(genres.eq(gameGenre.genres))
+                .join(games.gameDeveloper, gameDeveloper)
+                .join(developers)
+                .on(developers.eq(gameDeveloper.developers))
+                .orderBy(games.relesaeDate.desc())
+                .transform(groupBy(games.gameId).list(Projections.constructor(
+                        GameListDTO.class, games.gameId, games.title, games.relesaeDate, series.name,
+                        list(genres.name), list(Projections.constructor(DeveloperDTO.class, developers.name, developers.url)))));
 
-        JPAQuery<Long> countQuery = queryFactory
-                .select(games.count())
-                .from(games);
-
-        return PageableExecutionUtils.getPage(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, countQuery::fetchOne);
+        return result;
     }
 
     @Override
