@@ -9,10 +9,12 @@ import GameTalk.entity.joinEntity.QGameDeveloperEntity;
 import GameTalk.entity.joinEntity.QGameGenreEntity;
 import GameTalk.entity.joinEntity.QGamePlatformEntity;
 import GameTalk.entity.joinEntity.QGamePublisherEntity;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
@@ -121,6 +124,7 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
         return result;
     }
 
+    /* game Deatil Page*/
     @Override
     public GameDetailsDTO detail(Long gameId) {
         GameDetailsDTO result = queryFactory

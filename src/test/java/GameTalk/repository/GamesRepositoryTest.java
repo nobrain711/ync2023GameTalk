@@ -313,5 +313,6 @@ class GamesRepositoryTest {
     @Transactional
     void Details() {
         GameDetailsDTO details = customGameRepository.detail(1L);
+        System.out.println(details);
     }
 }

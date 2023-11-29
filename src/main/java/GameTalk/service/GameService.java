@@ -5,10 +5,13 @@ import GameTalk.DTO.Page.PageRequestDTO;
 import GameTalk.DTO.Page.PageResultDTO;
 import GameTalk.DTO.game.GameListDTO;
 import GameTalk.DTO.game.GameDetailsDTO;
+import GameTalk.DTO.game.Info.DeveloperDTO;
+import GameTalk.DTO.game.Info.PublishersDTO;
 import GameTalk.entity.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public interface GameService {
@@ -43,15 +46,15 @@ public interface GameService {
 
         // developer
         ArrayList<DevelopersEntity> developersEntities = new ArrayList<>();
-        for (String developer : gameDetailsDTO.getDevelopers()) {
-            developersEntities.add(DevelopersEntity.builder().name(developer).build());
+        for (DeveloperDTO developer : gameDetailsDTO.getDevelopers()) {
+            developersEntities.add(DevelopersEntity.builder().name(developer.getName()).url(developer.getUrl()).build());
         }
         entityMap.put("developers", developersEntities);
 
         // publisher
         ArrayList<PublishersEntity> publishersEntities = new ArrayList<>();
-        for (String publisher : gameDetailsDTO.getPublishers()) {
-            publishersEntities.add(PublishersEntity.builder().name(publisher).build());
+        for (PublishersDTO publisher : gameDetailsDTO.getPublishers()) {
+            publishersEntities.add(PublishersEntity.builder().name(publisher.getName()).url(publisher.getUrl()).build());
         }
         entityMap.put("publisher", publishersEntities);
 

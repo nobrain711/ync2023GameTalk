@@ -4,6 +4,7 @@ import GameTalk.DTO.Page.PageRequestDTO;
 import GameTalk.DTO.Page.PageResultDTO;
 import GameTalk.DTO.game.GameListDTO;
 import GameTalk.DTO.game.GameDetailsDTO;
+import GameTalk.entity.GamesEntity;
 import GameTalk.entity.SeriesEntity;
 import GameTalk.repository.*;
 import GameTalk.repository.QueryDSL.CustomGameRepositoryImpl;
@@ -11,8 +12,10 @@ import GameTalk.repository.joinEntity.GameDeveloperRepository;
 import GameTalk.repository.joinEntity.GameGenreRepostiory;
 import GameTalk.repository.joinEntity.GamePlatformRepository;
 import GameTalk.repository.joinEntity.GamePublisherReposiory;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,14 +46,25 @@ public class GameServiceImpl implements GameService {
     private final CustomGameRepositoryImpl customGameRepository;
 
     @Override
+    @Transactional
     public void register(GameDetailsDTO dto) {
         Map<String, Object> dtoToEntity = dtoToEntity(dto);
 
-        SeriesEntity series = (SeriesEntity) dtoToEntity.get("series");
-        try {
-            seriesRepository.save(series);
-        } catch (Exception e) {
-            log.info(e.getMessage());
+        /* seriesEntity -> dtoToEntity
+         * seriex -> DB
+         * */
+        SeriesEntity seriesEntity = (SeriesEntity) dtoToEntity.get("series");
+        SeriesEntity series = seriesRepository.findByName(seriesEntity.getName());
+
+        if (series == null){
+            seriesRepository.save(seriesEntity);
+            series = seriesRepository.findByName(seriesEntity.getName());
+        }
+
+        GamesEntity gamesEntity = (GamesEntity) dtoToEntity.get("game");
+        try{
+            gamesRepository.save(gamesEntity);
+            GamesEntity games = gamesRepository.findByTitle(gamesEntity.getTitle());
         }
     }
 
