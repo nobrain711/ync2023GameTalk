@@ -2,6 +2,8 @@ package GameTalk.repository;
 
 import GameTalk.DTO.game.GameListDTO;
 import GameTalk.DTO.game.GameDetailsDTO;
+import GameTalk.DTO.game.Info.DeveloperDTO;
+import GameTalk.DTO.game.Info.PublishersDTO;
 import GameTalk.entity.*;
 import GameTalk.entity.joinEntity.GameDeveloperEntity;
 import GameTalk.entity.joinEntity.GameGenreEntity;
@@ -289,8 +291,21 @@ class GamesRepositoryTest {
     void paging() {
         List<GameListDTO> list = customGameRepository.getList();
 
-        for(GameListDTO item : list){
-            System.out.println(item);
+        for (GameListDTO item : list) {
+            System.out.print("GameId: " + item.getGameId() + " ");
+            System.out.print("GameTitle: " + item.getTitle() + " ");
+            System.out.print("GameReleaseDate: " + item.getReleaseDate() + " ");
+            System.out.println("GameSeries: " + item.getSeries());
+            System.out.println("Genre :" + item.getGenres());
+            for (DeveloperDTO dto : item.getDevelopers()) {
+                System.out.print("Developer Name: " + dto.getName() + " ");
+                System.out.println("Developer Url: " + dto.getUrl());
+            }
+            for (PublishersDTO dto : item.getPublishers()) {
+                System.out.print("Publisher Name: " + dto.getName() + " ");
+                System.out.println("Publisher Url: " + dto.getUrl());
+            }
+            System.out.println("Platfrom: "+item.getPlatforms());
         }
     }
 

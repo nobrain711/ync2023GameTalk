@@ -1,10 +1,16 @@
 package GameTalk.DTO.game;
 
 import GameTalk.DTO.game.Info.DeveloperDTO;
+import GameTalk.DTO.game.Info.PublishersDTO;
+import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * gameId: 게임 식별 번호
@@ -17,7 +23,7 @@ import java.util.List;
  * platforms: 게임 플레이 가능한 플랫폼
  * dlcs: 게임 DLC 혹은 DLC의 부모게임
  */
-@ToString
+@Data
 public class GameListDTO {
     private Long gameId;
     private String title;
@@ -25,29 +31,27 @@ public class GameListDTO {
     private String series;
     private List<String> genres;
     private List<DeveloperDTO> developers;
-//    private List<String> publishers;
-//    private List<String> platforms;
-
-//    private List<String> stringToList(String input) {
-//        List<String> result;
-//        if (input.contains("\" ") == true && input != null) {
-//            result = Arrays.asList(input.split("\" "));
-//        } else {
-//            result = Arrays.asList(input);
-//        }
-//        return result;
-//    }
+    private List<PublishersDTO> publishers;
+    private List<String> platforms;
 
     public GameListDTO(Long gameId, String title, LocalDate releaseDate, String series,
-                       List<String> genres, List<DeveloperDTO> developers/*,
-                       String publishers, String platforms*/) {
+                       String genres, String developers,
+                       String publishers, String platforms) {
         this.gameId = gameId;
         this.title = title;
         this.releaseDate = releaseDate;
         this.series = series;
-        this.genres = genres;
-        this.developers = developers;
-//        this.publishers = stringToList(publishers);
-//        this.platforms = stringToList(platforms);
+        this.genres = List.of(genres.split(","));
+        this.developers = Arrays.stream(developers.split(","))
+                .map(pair -> {
+                    String[] parts = pair.split("@");
+                    return new DeveloperDTO(parts[0], parts[1]);
+                }).collect(Collectors.toList());
+        this.publishers = Arrays.stream(publishers.split(","))
+                .map(pair -> {
+                    String[] parts = pair.split("@");
+                    return new PublishersDTO(parts[0], parts[1]);
+                }).collect(Collectors.toList());
+        this.platforms = List.of(platforms.split(","));
     }
 }

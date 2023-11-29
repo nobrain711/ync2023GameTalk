@@ -3,6 +3,7 @@ package GameTalk.repository.QueryDSL;
 import GameTalk.DTO.game.GameDetailsDTO;
 import GameTalk.DTO.game.GameListDTO;
 import GameTalk.DTO.game.Info.DeveloperDTO;
+import GameTalk.DTO.game.Info.PublishersDTO;
 import GameTalk.entity.*;
 import GameTalk.entity.joinEntity.QGameDeveloperEntity;
 import GameTalk.entity.joinEntity.QGameGenreEntity;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
@@ -58,7 +60,8 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     // Developer
     JPQLQuery<String> developerSub = JPAExpressions.select(
                     Expressions.stringTemplate(
-                            "LISTAGG({0}, ', ') WITHIN GROUP ( ORDER BY {0})", developers.name
+                            "LISTAGG({0}||'@'||{1}, ', ') WITHIN GROUP ( ORDER BY {0})",
+                            developers.name, developers.url
                     ))
             .from(developers)
             .innerJoin(developers.gameDeveloper, gameDeveloper)
@@ -68,8 +71,8 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     // Publisher
     JPQLQuery<String> publisherSub = JPAExpressions.select(
                     Expressions.stringTemplate(
-                            "LISTAGG({0}, ', ') WITHIN GROUP (ORDER BY {0})", publishers.name
-                    ))
+                            "LISTAGG({0}||'@'||{1}, ', ') WITHIN GROUP (ORDER BY {0})",
+                            publishers.name, publishers.url))
             .from(publishers)
             .innerJoin(publishers.gamePublisher, gamePublisher)
             .where(games.gameId.eq(gamePublisher.games.gameId));
@@ -107,21 +110,16 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
                         games.title,
                         games.relesaeDate,
                         series.name,
-                        genres.name,
-                        developers.name,
-                        developers.url)
+                        genreSub,
+                        developerSub,
+                        publisherSub,
+                        platformSub)
                 .from(games)
                 .leftJoin(games.series, series)
-                .leftJoin(games.gameGenre, gameGenre)
-                .innerJoin(genres)
-                .on(genres.eq(gameGenre.genres))
-                .join(games.gameDeveloper, gameDeveloper)
-                .join(developers)
-                .on(developers.eq(gameDeveloper.developers))
                 .orderBy(games.relesaeDate.desc())
-                .transform(groupBy(games.gameId).list(Projections.constructor(
-                        GameListDTO.class, games.gameId, games.title, games.relesaeDate, series.name,
-                        list(genres.name), list(Projections.constructor(DeveloperDTO.class, developers.name, developers.url)))));
+                .transform(groupBy(games.gameId).
+                        list(Projections.constructor(GameListDTO.class, games.gameId, games.title, games.relesaeDate, series.name,
+                                genreSub, developerSub, publisherSub, platformSub)));
 
         return result;
     }
