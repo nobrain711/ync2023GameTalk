@@ -35,7 +35,7 @@ public interface GameService {
                 .info(gameDetailsDTO.getInfo())
                 .relesaeDate(gameDetailsDTO.getReleaseDate())
                 .build();
-        entityMap.put("game", gamesEntity);
+        entityMap.put("games", gamesEntity);
 
         // genre
         ArrayList<GenresEntity> genresEntities = new ArrayList<>();

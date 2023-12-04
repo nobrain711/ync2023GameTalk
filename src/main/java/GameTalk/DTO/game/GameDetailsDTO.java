@@ -2,6 +2,8 @@ package GameTalk.DTO.game;
 
 import GameTalk.DTO.game.Info.DeveloperDTO;
 import GameTalk.DTO.game.Info.PublishersDTO;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -37,12 +39,14 @@ public class GameDetailsDTO {
     private List<String> platforms;
 //    private List<Long> dlcs;
 
-    public GameDetailsDTO(Long gameId, String title, String info, LocalDate releaseDate, String series,
-                       List<String> genres, List<DeveloperDTO> developer, List<PublishersDTO> publishers, List<String> platfroms){
-        this.gameId =gameId;
+    @JsonCreator
+    public GameDetailsDTO(@JsonProperty("title") String title, @JsonProperty("info") String info,
+                          @JsonProperty("localDate") String releaseDate, @JsonProperty("series") String series,
+                          @JsonProperty("genres") List<String> genres, @JsonProperty("developer") List<DeveloperDTO> developer,
+                          @JsonProperty("publishers") List<PublishersDTO> publishers, @JsonProperty("platforms") List<String> platfroms) {
         this.title = title;
         this.info = info;
-        this.releaseDate = releaseDate;
+        this.releaseDate = LocalDate.parse(releaseDate);
         this.series = series;
         this.genres = genres;
         this.developers = developer;

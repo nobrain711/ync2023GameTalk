@@ -16,11 +16,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -60,12 +62,20 @@ public class GameServiceImpl implements GameService {
             seriesRepository.save(seriesEntity);
             series = seriesRepository.findByName(seriesEntity.getName());
         }
+        log.info(series);
 
         GamesEntity gamesEntity = (GamesEntity) dtoToEntity.get("game");
-        try{
+        GamesEntity game = gamesRepository.findByTitle(gamesEntity.getTitle());
+
+        if(game != null){
+            log.info("이미 존재하는 게임 입니다.");
+        }else {
             gamesRepository.save(gamesEntity);
-            GamesEntity games = gamesRepository.findByTitle(gamesEntity.getTitle());
+            game = gamesRepository.findByTitle(gamesEntity.getTitle());
+            log.info(game);
         }
+
+
     }
 
     @Override
