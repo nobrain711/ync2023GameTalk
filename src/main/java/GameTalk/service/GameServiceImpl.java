@@ -4,8 +4,9 @@ import GameTalk.DTO.Page.PageRequestDTO;
 import GameTalk.DTO.Page.PageResultDTO;
 import GameTalk.DTO.game.GameListDTO;
 import GameTalk.DTO.game.GameDetailsDTO;
-import GameTalk.entity.GamesEntity;
-import GameTalk.entity.SeriesEntity;
+import GameTalk.DTO.game.Info.DeveloperDTO;
+import GameTalk.entity.*;
+import GameTalk.entity.joinEntity.GameGenreEntity;
 import GameTalk.repository.*;
 import GameTalk.repository.QueryDSL.CustomGameRepositoryImpl;
 import GameTalk.repository.joinEntity.GameDeveloperRepository;
@@ -15,19 +16,12 @@ import GameTalk.repository.joinEntity.GamePublisherReposiory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,33 +43,72 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public void register(GameDetailsDTO dto) {
+    public ResponseEntity register(GameDetailsDTO dto) {
         Map<String, Object> dtoToEntity = dtoToEntity(dto);
 
         /* seriesEntity -> dtoToEntity
-         * seriex -> DB
+         * series -> DB
          * */
         SeriesEntity seriesEntity = (SeriesEntity) dtoToEntity.get("series");
         SeriesEntity series = seriesRepository.findByName(seriesEntity.getName());
 
-        if (series == null){
-            seriesRepository.save(seriesEntity);
-            series = seriesRepository.findByName(seriesEntity.getName());
+        if (series == null) {
+            series = seriesRepository.save(seriesEntity);
         }
         log.info(series);
 
-        GamesEntity gamesEntity = (GamesEntity) dtoToEntity.get("game");
-        GamesEntity game = gamesRepository.findByTitle(gamesEntity.getTitle());
+        try {
+            GamesEntity gamesEntity = (GamesEntity) dtoToEntity.get("games");
+            gamesEntity.setSeries(series);
+            GamesEntity games = gamesRepository.save(gamesEntity);
 
-        if(game != null){
-            log.info("이미 존재하는 게임 입니다.");
-        }else {
-            gamesRepository.save(gamesEntity);
-            game = gamesRepository.findByTitle(gamesEntity.getTitle());
-            log.info(game);
+            log.info(games);
+        }catch (DataIntegrityViolationException e){
+            return ResponseEntity.badRequest().body("141111\n이미 등록이 된 게임 입니다.");
         }
 
+        List<GenresEntity> genresEntityList = (List<GenresEntity>) dtoToEntity.get("genres");
+        for (GenresEntity genre : genresEntityList) {
+            GenresEntity entity = genresRepository.findByNameIgnoreCase(genre.getName());
+            if (entity == null) {
+                entity = genresRepository.save(genre);
+            }
+            GameGenreEntity.builder()
+                            .games(games)
+            log.info(entity);
+        }
 
+        List<DevelopersEntity> developersEntities = (List<DevelopersEntity>) dtoToEntity.get("developers");
+        for (DevelopersEntity developer : developersEntities) {
+            log.info("원래 entity : " + developer);
+            DevelopersEntity entity = developerRepository.findByNameIgnoreCase(developer.getName());
+
+            if (entity == null) {
+                entity = developerRepository.save(developer);
+            }
+            log.info("등록된 entit" + entity);
+        }
+
+        List<PublishersEntity> publishersEntities = (List<PublishersEntity>) dtoToEntity.get("publisher");
+        for (PublishersEntity publisher : publishersEntities) {
+            log.info("원래 : " + publisher);
+            PublishersEntity entity = publisherRepository.findByNameIgnoreCase(publisher.getName());
+            if (entity == null) {
+                entity = publisherRepository.save(publisher);
+            }
+            log.info("등록됨 : " + entity);
+        }
+
+        List<PlatformEntity> platformEntityList = (List<PlatformEntity>) dtoToEntity.get("platform");
+        for (PlatformEntity platform : platformEntityList) {
+            log.info("원래 : " + platform);
+            PlatformEntity entity = platformRepository.findByNameIgnoreCase(platform.getName());
+            if(entity == null){
+                entity = platformRepository.save(platform);
+            }
+            log.info(entity);
+        }
+        return null;
     }
 
     @Override

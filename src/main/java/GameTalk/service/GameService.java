@@ -8,15 +8,15 @@ import GameTalk.DTO.game.GameDetailsDTO;
 import GameTalk.DTO.game.Info.DeveloperDTO;
 import GameTalk.DTO.game.Info.PublishersDTO;
 import GameTalk.entity.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public interface GameService {
 
-    void register(GameDetailsDTO dto);
+    ResponseEntity register(GameDetailsDTO dto);
 
     GameDetailsDTO get(Long gameId);
 
