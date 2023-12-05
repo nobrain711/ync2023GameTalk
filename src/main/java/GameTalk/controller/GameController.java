@@ -29,7 +29,7 @@ public class GameController {
         return ResponseEntity.ok(gameService.getList(pageRequestDTO));
     }
 
-    @GetMapping(value = "/details/{gameId}")
+    @GetMapping("/details/{gameId}")
     public HttpEntity<GameDetailsDTO> ResponseEntity(@PathVariable("gameId") Long gameId) {
         return ResponseEntity.ok(gameService.get(gameId));
     }
