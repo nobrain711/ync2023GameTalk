@@ -1,10 +1,7 @@
 package GameTalk.entity;
 
 
-import GameTalk.entity.joinEntity.GameDeveloperEntity;
-import GameTalk.entity.joinEntity.GameGenreEntity;
-import GameTalk.entity.joinEntity.GamePlatformEntity;
-import GameTalk.entity.joinEntity.GamePublisherEntity;
+import GameTalk.entity.joinEntity.*;
 import jakarta.persistence.*;
 import lombok.*;
 

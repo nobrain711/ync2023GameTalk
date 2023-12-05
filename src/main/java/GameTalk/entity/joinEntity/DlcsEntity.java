@@ -17,12 +17,12 @@ import lombok.*;
 @IdClass(DlcsEntityId.class)
 public class DlcsEntity {
     @Id
-    @ManyToOne
+    @ManyToOne(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_game", referencedColumnName = "game_id")
     private GamesEntity parentGame;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "child_game", referencedColumnName = "game_id")
     private GamesEntity childGame;
 }

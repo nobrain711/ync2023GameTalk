@@ -37,7 +37,7 @@ public class GameDetailsDTO {
     private List<DeveloperDTO> developers;
     private List<PublishersDTO> publishers;
     private List<String> platforms;
-//    private List<Long> dlcs;
+    private List<Long> dlcs;
 
     @JsonCreator
     public GameDetailsDTO(@JsonProperty("title") String title, @JsonProperty("info") String info,
