@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CustomDlcsRepository {
     List<GamesEntity> findByChildGames(GamesEntity parentGame);
+
+    GamesEntity findByParentGame(GamesEntity childGame);
 }

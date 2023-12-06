@@ -47,8 +47,18 @@ class DlcsRepositoryTest {
 
         List<GamesEntity> childGames = customerDlcsRepository.findByChildGames(parentGame);
 
-        for(GamesEntity childGame : childGames){
+        for (GamesEntity childGame : childGames) {
             System.out.println(childGame.getGameId());
         }
+    }
+
+    @Test
+    @Transactional
+    void showParent(){
+        GamesEntity childGame = gamesRepository.findByGameId(7L);
+
+        GamesEntity parentGame = customerDlcsRepository.findByParentGame(childGame);
+
+        System.out.println(parentGame.getGameId());
     }
 }
