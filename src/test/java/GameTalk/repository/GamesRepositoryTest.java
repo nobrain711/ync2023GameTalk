@@ -315,4 +315,11 @@ class GamesRepositoryTest {
         GameDetailsDTO details = customGameRepository.detail(1L);
         System.out.println(details);
     }
+
+    @Test
+    @Transactional
+    void dlcsTest(){
+        Tuple data = customGameRepository.getData(6L);
+        System.out.println(data);
+    }
 }

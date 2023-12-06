@@ -1,6 +1,7 @@
 package GameTalk.DTO.game;
 
 import GameTalk.DTO.game.Info.DeveloperDTO;
+import GameTalk.DTO.game.Info.DlcsDTO;
 import GameTalk.DTO.game.Info.PublishersDTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,7 +38,7 @@ public class GameDetailsDTO {
     private List<DeveloperDTO> developers;
     private List<PublishersDTO> publishers;
     private List<String> platforms;
-    private List<Long> dlcs;
+    private List<DlcsDTO> dlcs;
 
     @JsonCreator
     public GameDetailsDTO(@JsonProperty("title") String title, @JsonProperty("info") String info,
@@ -55,7 +56,8 @@ public class GameDetailsDTO {
     }
 
     public GameDetailsDTO(Long gameId, String title, String info, LocalDate releaseDate,
-                          String series, String genres, String developers, String publishers, String platforms) {
+                          String series, String genres, String developers,
+                          String publishers, String platforms) {
         this.gameId = gameId;
         this.title = title;
         this.info = info;

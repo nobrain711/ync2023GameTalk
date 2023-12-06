@@ -3,15 +3,13 @@ package GameTalk.repository.joinEntity;
 import GameTalk.entity.GamesEntity;
 import GameTalk.entity.joinEntity.DlcsEntity;
 import GameTalk.repository.GamesRepository;
-import GameTalk.repository.QueryDSL.CustomerDlcsRepositoryImpl;
+import GameTalk.repository.QueryDSL.CustomGameRepositoryImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class DlcsRepositoryTest {
@@ -20,7 +18,7 @@ class DlcsRepositoryTest {
     @Autowired
     private DlcsRepository dlcsRepository;
     @Autowired
-    private CustomerDlcsRepositoryImpl customerDlcsRepository;
+    private CustomGameRepositoryImpl customGameRepository;
 
     @Test
     void dlcInsert() {
@@ -45,7 +43,7 @@ class DlcsRepositoryTest {
     void showChiled() {
         GamesEntity parentGame = gamesRepository.findByGameId(6L);
 
-        List<GamesEntity> childGames = customerDlcsRepository.findByChildGames(parentGame);
+        List<GamesEntity> childGames = customGameRepository.findByChildGames(parentGame);
 
         for (GamesEntity childGame : childGames) {
             System.out.println(childGame.getGameId());
@@ -57,7 +55,7 @@ class DlcsRepositoryTest {
     void showParent(){
         GamesEntity childGame = gamesRepository.findByGameId(7L);
 
-        GamesEntity parentGame = customerDlcsRepository.findByParentGame(childGame);
+        GamesEntity parentGame = customGameRepository.findByParentGame(childGame);
 
         System.out.println(parentGame.getGameId());
     }
